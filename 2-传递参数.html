@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React组件定义</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- react.js react-dom.js babel.js -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // 父传子使用props属性
+      // 组件的属性中有一个特殊的属性 叫children，表示组件的标签中间的内容
+      // const Person = (props) => {
+      //   console.log(props);
+      //   const { name, desc, toParent } = props;
+      //   return (
+      //     <>
+      //       <h3>{name}</h3>
+      //       <p>{desc}</p>
+      //       <button
+      //         onClick={() => {
+      //           // 子组件调用父组件传递的方法，把参数传递出去
+      //           toParent('传递了参数出去');
+      //         }}
+      //       >
+      //         传递参数
+      //       </button>
+      //       {props.children}
+      //     </>
+      //   );
+      // };
+
+      const Person = ({ children, ...rest }) => {
+        // console.log(props);
+        const { name, desc, toParent } = rest;
+        return (
+          <>
+            <h3>{name}</h3>
+            <p>{desc}</p>
+            <button
+              onClick={() => {
+                // 子组件调用父组件传递的方法，把参数传递出去
+                toParent('传递了参数出去');
+              }}
+            >
+              传递参数
+            </button>
+            {children}
+          </>
+        );
+      };
+
+      function App() {
+        const getChildParams = (str) => {
+          console.log(str);
+        };
+        return (
+          <>
+            <h1>我是一个组件</h1>
+            <Person
+              name='野原新之助'
+              desc='一个五岁大的幼稚园小朋友'
+              toParent={getChildParams}
+            >
+              <span>这是一段文字，出现在标签中间</span>
+              <p>这是又一行的代码</p>
+            </Person>
+          </>
+        );
+      }
+      // 使用ReactDOM.render把组件展示出来
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
