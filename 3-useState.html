@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React组件定义</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- react.js react-dom.js babel.js -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // useState是react中新增的hooks方法中的一个
+      //  可以在function定义的组件内部设置局部状态
+      //  只要组件的state或者props发生改变，组件就会重新渲染
+      //  hooks只能在function定义的组件内部使用
+      // useState设置局部状态的时候不能写在循环或者条件语句中
+      //  因为hooks实现的时候借助了数组的思想
+      const { useState } = React;
+      function App() {
+        console.count('App组件渲染了'); //
+        // useState返回一个数组，数组中的第一项是状态调用的时候的名字，第二项是改变状态的方法
+        // useState接受一个参数作为状态的初始值
+        const [count, setCount] = useState(0);
+        const [list, setList] = useState(['小米', '华为']);
+        const clickHandle = () => {
+          setCount((pre) => pre + 1);
+        };
+        const keyUpHandle = (e) => {
+          const val = e.currentTarget.value;
+          if (e.keyCode === 13 && val) {
+            setList((pre) => [...list, val]);
+          }
+        };
+        return (
+          <>
+            <h1>当前的count值为：{count}</h1>
+            <button onClick={clickHandle}>加一</button>
+            <hr />
+            <input
+              type='text'
+              placeholder='请输入品牌'
+              style={{ padding: '0.2rem 0.4rem' }}
+              onKeyUp={keyUpHandle}
+            />
+            <ul>
+              {list.map((item) => (
+                <li key={Math.random() * 1000 + item}>{item}</li>
+              ))}
+            </ul>
+          </>
+        );
+      }
+      // 使用ReactDOM.render把组件展示出来
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

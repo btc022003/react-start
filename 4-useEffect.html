@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React组件定义</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- react.js react-dom.js babel.js -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // useEffect 副作用
+      // useEffect接收两个参数
+      //  参数一 回调函数
+      //  参数二 依赖数组
+      //   当依赖数组中的数据发生改变之后，回调函数会执行
+      const { useEffect, useState } = React;
+      function App() {
+        const [count, setC] = useState(1);
+        const [count2, setC2] = useState(1);
+        // useEffect 如果参数二不存在，那么每一次组件渲染的时候都会执行
+        useEffect(() => {
+          console.log('代码执行了');
+        });
+        // 如果参数二是空数组，那么只有初始化的时候执行一次
+        useEffect(() => {
+          console.log('组件初始化的时候只执行一次');
+          return () => {
+            console.log('组件销毁的时候执行');
+          };
+        }, []);
+        useEffect(() => {
+          console.log('count变了');
+        }, [count]);
+        return (
+          <>
+            <h1>我是一个组件-{count}</h1>
+            <button onClick={() => setC(count + 1)}>改变</button>
+            <hr />
+            <h1>count2的值-{count2}</h1>
+            <button onClick={() => setC2(count2 + 1)}>改变</button>
+          </>
+        );
+      }
+      // 使用ReactDOM.render把组件展示出来
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
