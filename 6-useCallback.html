@@ -1,0 +1,62 @@
+<!-- useCallback的作用是缓存一个function -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React组件定义</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- react.js react-dom.js babel.js -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      // memo 当组件已经存在，并且组件中接受的属性数据不改变的时候不需要重新渲染
+      // 建议在使用组件的时候尽量都加上memo，可以提高页面的渲染速度
+      // useCallback的作用是缓存一个function，参数二是一个依赖项；当依赖项不发生改变的时候被缓存的方法不会重新创建
+      const { useState, memo, useCallback } = React;
+      const Item = ({ content, del, id }) => {
+        console.count('组件渲染了');
+        return (
+          <h1
+            onClick={() => {
+              del(id);
+            }}
+          >
+            {content}
+          </h1>
+        );
+      };
+      const MemoItem = memo(Item);
+      function App() {
+        const [list, setList] = useState([]);
+        const delHandle = useCallback((id) => {
+          console.log(id);
+        }, []);
+        return (
+          <div className='app'>
+            <input
+              type='text'
+              placeholder='请输入内容'
+              onKeyUp={(e) => {
+                const keyCode = e.keyCode;
+                const val = e.currentTarget.value;
+                if (keyCode === 13 && val) {
+                  setList([...list, { id: Date.now(), content: val }]);
+                }
+              }}
+            />
+            {list.map((item) => (
+              <MemoItem del={delHandle} key={item.id} {...item} />
+            ))}
+          </div>
+        );
+      }
+      // 使用ReactDOM.render把组件展示出来
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
