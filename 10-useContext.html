@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React组件定义</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- react.js react-dom.js babel.js -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const { createContext, useContext, useState } = React;
+      const context = createContext();
+
+      const AppProvider = ({ children }) => {
+        const [count, setCount] = useState(1);
+        return (
+          <context.Provider
+            value={{ name: 'useContext', version: '1.0.1', count, setCount }}
+          >
+            {children}
+          </context.Provider>
+        );
+      };
+
+      const Counter = () => {
+        const { count, setCount } = useContext(context);
+        return <button onClick={() => setCount(count + 1)}>{count}</button>;
+      };
+      function App() {
+        const c = useContext(context);
+        console.log(c);
+        return (
+          <>
+            <h1>我是一个组件-count值为-{c.count}</h1>
+            <p>{c.name}</p>
+            <hr />
+            <Counter />
+          </>
+        );
+      }
+      // 使用ReactDOM.render把组件展示出来
+      ReactDOM.render(
+        <AppProvider>
+          <App />
+        </AppProvider>,
+        document.getElementById('root')
+      );
+    </script>
+  </body>
+</html>

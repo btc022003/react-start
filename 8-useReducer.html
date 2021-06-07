@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React组件定义</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- react.js react-dom.js babel.js -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const { useReducer } = React;
+      function reducer(state, action) {
+        switch (action.type) {
+          case 'plus':
+            return { ...state, count: state.count + 1 };
+          default:
+            return state;
+        }
+      }
+      function App() {
+        // 在useReducer的时候，传递两个参数
+        //  参数一 是一个reducer的function
+        //  参数二 是初始值
+        // 他和redux中的数据流向相似，如果要改变数据只能通过dispatch派发一个action
+        const [state, dispatch] = useReducer(reducer, {
+          count: 1,
+          name: 'reducer demo',
+          list: [1, 2, 3],
+        });
+        return (
+          <>
+            <button
+              onClick={() =>
+                dispatch({
+                  type: 'plus',
+                })
+              }
+            >
+              {state.count}
+            </button>
+          </>
+        );
+      }
+      // 使用ReactDOM.render把组件展示出来
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
