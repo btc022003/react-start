@@ -39,7 +39,21 @@ const App = () => <h1>这是一个组件</h1>
 
 #### 脚手架
 
+```bash
+npx create-react-app first-react-app # 创建一个react项目
+# 脚手架默认创建的项目中是不包含其他react插件的，用什么需要自己单独安装
+# 所有的js和jsx文件都可以作为组件的后缀
+```
+
+
+
 #### 路由组件
+
+```bash
+npm i react-router-dom # 
+```
+
+
 
 ---
 
